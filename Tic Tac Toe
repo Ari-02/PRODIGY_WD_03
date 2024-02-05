@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Tic Tac Toe</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			background-color:#28136D;
+            color: #FC6403;
+            text-align:center;
+        }
+        @media(max-width:400px) {
+   	h1{
+ 	       font-size:3.5rem;
+            text-align:center;
+            text-shadow: 2px 2px 2px #DDDDDD;
+   	}
+       .Players{
+           display:flex;         
+            justify-content:center;        
+           flex-wrap:wrap;
+       }
+       .box{
+        	height:30vmin;
+            width:30vmin;
+            border-radius:1rem;
+            border:none;
+            box-shadow:0rem 1rem 1rem rgba(255,255,255,0.2);
+            font-size:8vmin;
+          }
+     }
+ 	@media(min-width:400px) {
+    	h1{
+ 	       font-size:4rem;
+            text-align:center;
+            text-shadow: 4px 4px 4px #DDDDDD;
+    	}
+        .Players{
+       	display:flex; 
+           flex-direction:column;       
+           align-items:center;        
+           flex-wrap:wrap;
+         }
+        .box{
+        	height:18vmin;
+            width:18vmin;
+            border-radius:1rem;
+            border:none;
+            box-shadow:0rem 1rem 1rem rgba(255,255,255,0.2);
+            font-size:8vmin;
+          }
+      }
+        label{
+          font-size:30px;
+          padding-right:10px;
+          margin-top:20px;
+          text-shadow: 0.5px 0.5px #DDDDDD;
+        }
+        .container{
+        	height:80vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .game{
+        	height:60vh;
+            width:60vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:1.5vmin;
+        }
+         button{
+           font-size:1.25rem;
+       	background-color: #FC6403;
+           color:#28136D;   
+           padding:1rem;    
+           border:none;
+           border-radius:1rem;
+        }
+        .msg-hold{
+        	font-size:2.5rem;
+            text-shadow: 2px 2px 2px #DDDDDD;
+        }
+        .hide{
+        	display:none;
+        }
+    </style>
+</head>
+<body>
+	    <h1>TIC TAC TOE</h1>
+	    <div class="Players">
+            <label>Player1(X)</label>
+            <label>Player2(O)</label>
+        </div>
+		<div class="container">
+			<div class="game">
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+				<button class="box"></button>
+           </div>
+		</div>
+		<div class="msg-hold hide">
+				<p id="msg">Winner</p>
+		</div>
+		<div >
+	      	<button id="restart" onclick="restartGame()">RESTART</button>
+        </div>
+      <script>
+        	let boxes = document.querySelectorAll(".box");
+			let restartBtn = document.querySelector("#restart");
+			let msghold = document.querySelector(".msg-hold");
+			let msg = document.querySelector("#msg");
+			let turnx=true;  //playerX
+			const wincondn= [
+			    [0, 1, 2], 
+			    [0, 3, 6], 
+	            [0, 4, 8], 
+	            [1, 4, 7], 
+				[2, 5, 8], 
+			    [2, 4, 6], 
+				[3, 4,5], 
+				[6, 7,8]
+			];
+			const restartGame = () => {
+				turnx=true;
+				enableboxes() ;
+				msghold.classList.add("hide") ;
+             }	
+		boxes.forEach((box) => {
+			box.addEventListener("click",  ()  => {
+				console. log("box was clicked");
+				if (turnx) { 
+				//playerx
+					 box.innerText ="X";
+					 turnx = false;
+				}  else { 
+				//playero
+					box.innerText ="O";
+					turnx = true;
+					}
+					box.disabled = true;
+		        	checkwinner();
+		     }) ;
+		}) ;
+		const enableboxes = () => {
+			for (let box of boxes) {
+				box.disabled = false;
+				box.innerText="";
+			}
+		}
+        const disableboxes = () => {
+			for (let box of boxes) {
+				box.disabled = true;
+			}
+		}
+        const showWinner = (winner) => {
+			msg.innerText = `Winner is ${winner}`;
+			msghold.classList.remove("hide") ;
+			disableboxes() ;
+		}
+		const checkwinner = () => {
+				for (let condn of wincondn) {
+					let pos1= boxes[condn[0]].innerText;
+					let pos2= boxes[condn[1]].innerText;
+					let pos3= boxes[condn[2]].innerText;
+					if (pos1 !="" & pos2 !="" & pos3 !="") {
+						if(pos1 === pos2 & pos2=== pos3) {
+							console.log("Winner", pos1);
+							showWinner(pos1);
+						}
+					}
+				}
+		}
+							
+      </script>
+</body>
+</html>
